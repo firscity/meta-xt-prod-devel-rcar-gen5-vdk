@@ -11,6 +11,7 @@ variables:
   XT_DOMD_DTB_NAME: "%{SOC_FAMILY}-%{DOMD_MACHINE}-domd.dtb"
   XT_XEN_DTB_NAME: "%{SOC_FAMILY}-%{DOMD_MACHINE}-xen.dtb"
   XT_GENERIC_DOMU_TAG: ""
+  XT_PREBUILT_FWK: ""
   DOM0_MACHINE: "generic-armv8-xt"
   DOMD_MACHINE: "ironhide"
   DOMU_MACHINE: "ironhide"
@@ -19,6 +20,7 @@ variables:
   XT_DOMU_CONFIG_NAME: "domu-ironhide.cfg"
   XT_KERNEL_BRANCH: "v6.1.102/rcar-5.2.0.rc11_vpf.rc19-xt"
   XT_KERNEL_REV: "fb7593542d09903d74bf9487be9f69301f557142"
+  XT_SDK_VERSION: "4.23.0"
 common_data:
   # Sources used by all yocto-based domains
   sources: &COMMON_SOURCES
@@ -299,6 +301,12 @@ parameters:
           XT_XEN_DTB_NAME: "%{SOC_FAMILY}-%{DOMD_MACHINE}-xen-cr52.dtb"
           XT_DOMD_CONFIG_NAME: "domd-ironhide-cr52.cfg"
           XT_DOMU_CONFIG_NAME: "domu-ironhide-cr52.cfg"
+          XT_PREBUILT_FWK: "${TOPDIR}/../../../prebuilt_fwk/sdk_%{XT_SDK_VERSION}/"
+        components:
+          domd:
+            builder:
+              conf:
+                - [XT_PREBUILT_FWK, "%{XT_PREBUILT_FWK}"]
     "no":
       overrides:
         variables:
@@ -306,3 +314,8 @@ parameters:
           XT_XEN_DTB_NAME: "%{SOC_FAMILY}-%{DOMD_MACHINE}-xen.dtb"
           XT_DOMD_CONFIG_NAME: "domd-ironhide.cfg"
           XT_DOMU_CONFIG_NAME: "domu-ironhide.cfg"
+        components:
+          domd:
+            builder:
+              conf:
+                - [BBMASK:append, " ../layers/meta-xt-domd-gen5/recipes-bsp/bsp-test-apps/"]
