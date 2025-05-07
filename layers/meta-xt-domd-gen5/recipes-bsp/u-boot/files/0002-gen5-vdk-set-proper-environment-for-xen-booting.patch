@@ -1,0 +1,59 @@
+From 4290714909a883bfe517255f1d8795511f288718 Mon Sep 17 00:00:00 2001
+From: Dmytro Firsov <dmytro_firsov@epam.com>
+Date: Thu, 8 May 2025 10:51:09 +0300
+Subject: [PATCH 2/2] gen5: vdk: set proper environment for xen booting
+
+Signed-off-by: Leonid Komarianskyi <leonid_komarianskyi@epam.com>
+Signed-off-by: Dmytro Firsov <dmytro_firsov@epam.com>
+---
+ arch/arm/dts/r8a78000-ironhide.dts  | 2 +-
+ configs/r8a78000_ironhide_defconfig | 4 ++--
+ include/configs/rcar-gen5-common.h  | 5 +++--
+ 3 files changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/arch/arm/dts/r8a78000-ironhide.dts b/arch/arm/dts/r8a78000-ironhide.dts
+index 719391bf73..0d40721f98 100644
+--- a/arch/arm/dts/r8a78000-ironhide.dts
++++ b/arch/arm/dts/r8a78000-ironhide.dts
+@@ -18,7 +18,7 @@
+ 	};
+ 
+ 	chosen {
+-		bootargs = "ignore_loglevel rw root=/dev/nfs ip=on";
++		bootargs = "";
+ 		stdout-path = "serial1:38400n8";
+ 	};
+ 
+diff --git a/configs/r8a78000_ironhide_defconfig b/configs/r8a78000_ironhide_defconfig
+index 0a8c1d0263..6d29473d50 100644
+--- a/configs/r8a78000_ironhide_defconfig
++++ b/configs/r8a78000_ironhide_defconfig
+@@ -13,8 +13,8 @@ CONFIG_TARGET_IRONHIDE=y
+ CONFIG_SYS_CLK_FREQ=16666666
+ CONFIG_SYS_BOOT_GET_CMDLINE=y
+ CONFIG_SYS_BARGSIZE=2048
+-CONFIG_BOOTCOMMAND="booti 0x48080000 - 0x48000000"
+-CONFIG_BOOTARGS="console=ttyAMA0,38400n8 cma=800M root=/dev/vda"
++CONFIG_USE_BOOTCOMMAND=y
++CONFIG_BOOTCOMMAND="bootm 0x48080000 0x84000000 0x48000000"
+ CONFIG_ENV_IS_NOWHERE=y
+ CONFIG_SYS_CBSIZE=2048
+ CONFIG_PL01X_SERIAL=y
+diff --git a/include/configs/rcar-gen5-common.h b/include/configs/rcar-gen5-common.h
+index 1b969f7c91..5f80dd229e 100644
+--- a/include/configs/rcar-gen5-common.h
++++ b/include/configs/rcar-gen5-common.h
+@@ -21,7 +21,8 @@
+ #define CFG_MAX_MEM_MAPPED		(0x80000000u - DRAM_RSV_SIZE)
+ 
+ /* Environment setting */
+-#define CONFIG_EXTRA_ENV_SETTINGS	\
+-	"bootm_size=0x10000000\0"
++#define CFG_EXTRA_ENV_SETTINGS		\
++	"bootm_size=0x10000000\0"	\
++	"bootdelay=0\0"
+ 
+ #endif	/* __RCAR_GEN5_COMMON_H */
+-- 
+2.34.1
+
