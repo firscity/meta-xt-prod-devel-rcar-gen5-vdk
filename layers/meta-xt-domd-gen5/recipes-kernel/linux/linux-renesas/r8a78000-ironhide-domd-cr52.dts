@@ -1,0 +1,17 @@
+/dts-v1/;
+
+#include "r8a78000-ironhide-cr52.dts"
+#define PHANDLE_GIC (65000)
+
+/ {
+	/* This must point to Xen interrupt-parent. */
+	interrupt-parent = <PHANDLE_GIC>;
+
+	passthrough {
+	};
+};
+
+/* Xen will provide its own GIC, mask ours */
+&gic {
+	compatible = "";
+};

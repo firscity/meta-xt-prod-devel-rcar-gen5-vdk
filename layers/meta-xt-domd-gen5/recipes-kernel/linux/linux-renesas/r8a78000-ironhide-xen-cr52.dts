@@ -1,0 +1,27 @@
+/dts-v1/;
+
+#include "r8a78000-ironhide-cr52.dts"
+#include "chosen.dtsi"
+
+/ {
+	model = "Renesas evaluation board for R-Car X5H";
+	compatible = "arm,rtsm_ve,aemv8a", "arm,vexpress";
+};
+
+/*=========================== Bus masters linked to IPMMUS ===================*/
+
+&mmc0 { iommus = <&smmu_pere 0x20000>; };
+&rsw3 { iommus = <&smmu_hscn 0x0>; };
+
+/* ============================ Xen pass through section =====================*/
+
+&pfc { xen,passthrough; };
+&cr52_rproc { xen,passthrough; };
+&mfis { xen,passthrough; };
+&rvgc_ref { xen,passthrough; };
+&reg_1p8v { xen,passthrough; };
+&reg_3p3v { xen,passthrough; };
+&mmc_ref_clk { xen,passthrough; };
+&mmc0 { xen,passthrough; };
+&rsw_clk { xen,passthrough; };
+&rsw3 { xen,passthrough; };

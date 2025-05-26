@@ -246,7 +246,7 @@ components:
         - "%{YOCTOS_WORK_DIR}/%{DOM0_BUILD_DIR}/tmp/deploy/images/%{DOM0_MACHINE}/uInitramfs"
         - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{DOMD_MACHINE}/xen-%{DOMD_MACHINE}.uImage"
         - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{DOMD_MACHINE}/xenpolicy-%{DOMD_MACHINE}"
-        - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{DOMD_MACHINE}/%{SOC_FAMILY}-%{DOMD_MACHINE}-xen.dtb"
+        - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{DOMD_MACHINE}/%{XT_XEN_DTB_NAME}"
         - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{DOMD_MACHINE}/u-boot-%{DOMD_MACHINE}.bin"
 
 images:
@@ -289,4 +289,20 @@ parameters:
                 gpt_type: B921B045-1DF0-41C3-AF44-4C6F280D3FAE # Linux aarch64 root
                 type: raw_image
                 image_path: "%{YOCTOS_WORK_DIR}/%{DOMU_BUILD_DIR}/tmp/deploy/images/%{DOMU_MACHINE}/%{BUILD_TARGET_DOMU}-x5h.ext4"
-
+  ENABLE_FWK:
+    desc: "Build with frameworks support"
+    "yes":
+      default: true
+      overrides:
+        variables:
+          XT_DOMD_DTB_NAME: "%{SOC_FAMILY}-%{DOMD_MACHINE}-domd-cr52.dtb"
+          XT_XEN_DTB_NAME: "%{SOC_FAMILY}-%{DOMD_MACHINE}-xen-cr52.dtb"
+          XT_DOMD_CONFIG_NAME: "domd-ironhide-cr52.cfg"
+          XT_DOMU_CONFIG_NAME: "domu-ironhide-cr52.cfg"
+    "no":
+      overrides:
+        variables:
+          XT_DOMD_DTB_NAME: "%{SOC_FAMILY}-%{DOMD_MACHINE}-domd.dtb"
+          XT_XEN_DTB_NAME: "%{SOC_FAMILY}-%{DOMD_MACHINE}-xen.dtb"
+          XT_DOMD_CONFIG_NAME: "domd-ironhide.cfg"
+          XT_DOMU_CONFIG_NAME: "domu-ironhide.cfg"
