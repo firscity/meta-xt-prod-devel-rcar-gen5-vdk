@@ -62,4 +62,5 @@ docker run \
 	-v "$HOME"/.ssh:/home/builder/.ssh \
 	-v "$HOME"/.gitconfig:/home/builder/.gitconfig \
 	-v "${WORKSPACE}":/home/builder/workspace \
+	-v "${WORKSPACE}/../prebuilt_fwk":/home/builder/prebuilt_fwk \
 	-ti --rm "$DOCKER_IMAGE_NAME"
